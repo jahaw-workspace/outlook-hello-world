@@ -1,0 +1,127 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Office JavaScript API -->
+	<script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+</head>
+
+<body>
+	<p>This add-in will insert the text 'Hello world!' in a new message.</p>
+	<button id="helloButton">Say hello</button>
+
+	<br />
+	<button id="requirements">Get Requirements</button>
+
+	<!-- The following image URL tracks diagnostic data for this sample add-in. Please remove the image tag if you reuse this sample in your own code project. -->
+	<img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-add-in-hello-world-run" />
+</body>
+
+<script>
+
+	Office.onReady((info) => {
+		if (info.host === Office.HostType.Outlook) {
+			document.getElementById("helloButton").onclick = sayHello;
+
+			document.getElementById("requirements").onclick = initFn;
+		}
+	});
+
+	/**
+	 * Writes 'Hello world!' to a new message body.
+	 */
+	function sayHello() {
+		Office.context.mailbox.item.body.setAsync(
+			"Hello world!",
+			{
+				coercionType: "html", // Write text as HTML
+			},
+
+			// Callback method to check that setAsync succeeded
+			function (asyncResult) {
+				if (asyncResult.status ==
+					Office.AsyncResultStatus.Failed) {
+					write(asyncResult.error.message);
+				}
+			}
+		);
+	}
+
+	function displayEnvInfo() {
+		// 加载项运行环境信息
+		const contextInfo = Office.context.diagnostics;
+		console.log("contextInfo: " + JSON.stringify(contextInfo));
+
+		// 获取承载加载项的 Office 应用程序。
+		console.log(JSON.stringify(Office.context.host));
+
+		// 获取承载加载项的 Office 应用程序的版本
+		console.log("Office version: " + contextInfo?.version);
+
+		// 提供运行加载项的平台
+		console.log("Platform: ", JSON.stringify(Office.context.platform));
+
+		// JavaScript runtime URL
+		const url = Office.context.urls?.javascriptRuntimeUrl;
+		console.log("Office.context.urls", url);
+
+		const myContentLanguage = Office.context.contentLanguage;
+		console.log("myContentLanguage", myContentLanguage);
+	};
+
+	function checkRequirement() {
+		const requirements = Office.context.requirements;
+		if (!requirements) return;
+		if (requirements.isSetSupported("Mailbox", "1.14")) {
+			console.log("support requirement 1.14");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.13")) {
+			console.log("support requirement 1.13");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.12")) {
+			console.log("support requirement 1.12");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.11")) {
+			console.log("support requirement 1.11");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.10")) {
+			console.log("support requirement 1.10");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.9")) {
+			console.log("support requirement 1.9");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.8")) {
+			console.log("support requirement 1.8");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.7")) {
+			console.log("support requirement 1.7");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.6")) {
+			console.log("support requirement 1.6");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.5")) {
+			console.log("support requirement 1.5");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.4")) {
+			console.log("support requirement 1.4");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.3")) {
+			console.log("support requirement 1.3");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.2")) {
+			console.log("support requirement 1.2");
+		}
+		if (requirements.isSetSupported("Mailbox", "1.1")) {
+			console.log("support requirement 1.1");
+		}
+	};
+
+	function initFn() {
+		displayEnvInfo();
+		checkRequirement();
+	};
+
+</script>
+
+</html>
